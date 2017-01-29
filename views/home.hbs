@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html>
+<script>
+  function testF()
+  {
+    alert('Site is under maintaince! Please try again in some time');
+  }
+</script>
   <head>
     <meta charset="utf-8">
     <title>Home Page</title>
@@ -7,7 +13,10 @@
   <body>
     {{> header}}
 
-    <p>{{stringToUpperCase welcomeMessage}}</p>
+    <form method="get" action="/maintaince">
+      Enter your location: <input type="text" name="first_name" value="Mumbai" maxlength="200" />
+      <input  type="button" onclick="testF()" value="Get Weather" />
+    </form>
 
     {{> footer}}
   </body>

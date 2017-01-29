@@ -48,7 +48,16 @@ app.get('/',(req,res)=>{
   //To use partials
     res.render('home.hbs',{
       pageTitle:'Home Page',
-      welcomeMessage : 'Welcome to my website',
+      welcomeMessage : 'Welcome to my website'
+    })
+});
+
+app.get('/maintaince',(req,res)=>{
+  //To use partials
+  console.log(req);
+  console.log(res);
+    res.render('maintaince.hbs',{
+      pageTitle:'maintaince'
     })
 });
 
