@@ -6,6 +6,8 @@ const hbs = require('hbs');
 const fs = require('fs')
 //Post that will be used by app
 const port = process.env.PORT || 3000;
+//To get Weather
+const weather = require('./weather-app');
 
 var app = express();
 hbs.registerPartials(__dirname+'/views/partials');
@@ -39,6 +41,10 @@ hbs.registerHelper('getCurrentYear',()=>{
   return new Date().getFullYear();
 });
 
+hbs.registerHelper('getTemperaturInCelcius',(temperatureInF)=>{
+  var celsius = (5/9) * (temperatureInF - 32);
+  return Math.round(celsius);
+})
 //Function with param
 hbs.registerHelper('stringToUpperCase',(text)=>{
   return text.toUpperCase();
@@ -52,10 +58,31 @@ app.get('/',(req,res)=>{
     })
 });
 
+app.get('/weather',(req,res)=>{
+  weather.getWeather(JSON.stringify(req.query.location)).then((weatherResponse)=>{
+    res.render('weather.hbs',{
+      pageTitle:'Weather',
+      location : req.query.location,
+      summary : weatherResponse.data.currently.summary,
+      temperature : weatherResponse.data.currently.temperature,
+      fullAddress : weatherResponse.data.fullAddress,
+      apparentTemperature : weatherResponse.data.currently.apparentTemperature
+    });
+  },((error)=>{
+    console.log(error);
+    res.render('weather-error.hbs',{
+      pageTitle:'Weather',
+      error : error.message
+    });
+  }));
+  //To use partials
+  //console.log(res);
+
+});
+
 app.get('/maintaince',(req,res)=>{
   //To use partials
-  console.log(req);
-  console.log(res);
+  //console.log(res);
     res.render('maintaince.hbs',{
       pageTitle:'maintaince'
     })
